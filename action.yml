@@ -1,0 +1,37 @@
+name: 'ChangeScribe'
+description: 'Auto-generate a changelog from conventional commits — no API keys, no external dependencies.'
+author: 'kanishks1ngh'
+
+branding:
+  icon: 'book-open'
+  color: 'green'
+
+inputs:
+  commit-count:
+    description: 'Number of recent commits to scan'
+    required: false
+    default: '50'
+  commit-changelog:
+    description: 'Commit the updated CHANGELOG.md back to the repo'
+    required: false
+    default: 'true'
+
+outputs:
+  changelog-path:
+    description: 'Path to the written CHANGELOG.md'
+    value: 'CHANGELOG.md'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Generate changelog
+      shell: bash
+      env:
+        COMMIT_COUNT: ${{ inputs.commit-count }}
+        GIT_COMMIT: ${{ inputs.commit-changelog }}
+      run: node ${{ github.action_path }}/scripts/action.js

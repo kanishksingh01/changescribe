@@ -1,0 +1,23 @@
+name: Changelog
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Generate changelog
+        uses: kanishks1ngh/changelog-wiki-gen@v1
+        with:
+          commit-count: '50'
+          commit-changelog: 'true'
